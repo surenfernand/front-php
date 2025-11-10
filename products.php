@@ -21,7 +21,7 @@
     <div id="sidebar">
         <a href="dashboard.php">Dashboard</a>
         <a href="products.php">Products</a>
-        <a href="#">Users</a>
+     
 
     </div>
 
@@ -31,8 +31,7 @@
 
         <header class="d-flex justify-content-between align-items-center">
             <h1 class="h3">Product Management</h1>
-            <div>
-                <button class="btn btn-outline-secondary me-2">Profile</button>
+            <div> 
                 <button class="btn btn-danger">Logout</button>
             </div>
         </header>
@@ -42,7 +41,15 @@
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProductModal">
                     Add Product
                 </button>
+
             </div>
+
+            <div class="mt-3 mb-3">
+                <label for="productSearch" class="form-label">Search Products</label>
+                <input type="text" id="productSearch" class="form-control mb-3" placeholder="Search Products...">
+            </div>
+
+
             <div class="table-responsive">
                 <table id="productTableView" class="table table-striped table-bordered align-middle">
                     <thead class="table-dark">
@@ -150,6 +157,20 @@
 
     <script>
         loadProducts();
+
+
+        const searchInput = document.getElementById('productSearch');
+        const tableBody1 = document.querySelector('#productTableView tbody');
+
+        searchInput.addEventListener('input', () => {
+            const filter = searchInput.value.toLowerCase();
+            const rows = tableBody1.querySelectorAll('tr');
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                const match = Array.from(cells).some(cell => cell.textContent.toLowerCase().includes(filter));
+                row.style.display = match ? '' : 'none';
+            });
+        });
     </script>
 
 </body>

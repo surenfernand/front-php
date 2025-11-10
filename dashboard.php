@@ -19,15 +19,13 @@
     <div id="sidebar">
         <a href="dashboard.php">Dashboard</a>
         <a href="products.php">Products</a>
-        <a href="#">Users</a>
-
+        
     </div>
     <!-- Main Content -->
     <div class="content">
         <header class="d-flex justify-content-between align-items-center">
             <h1 class="h3">Admin Dashboard</h1>
-            <div>
-                <button class="btn btn-outline-secondary me-2">Profile</button>
+            <div> 
                 <button class="btn btn-danger" id="logoutBtn">Logout</button>
             </div>
         </header>

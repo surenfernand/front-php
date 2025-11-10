@@ -184,3 +184,27 @@ document.getElementById('logoutBtn').addEventListener('click', async () => {
         Swal.fire('Error', err.response?.data?.message || 'Logout failed', 'error');
     }
 });
+
+
+async function loadProductCount() {
+    try {
+        const res = await axios.get(`${API_BASE}/products/count`);
+        document.getElementById('totalProducts').textContent = res.data.count;
+    } catch (err) {
+        console.error('Failed to load product count', err);
+    }
+}
+ 
+loadProductCount();
+
+async function loadUserCount() {
+    try {
+        const res = await axios.get(`${API_BASE}/user/count`);
+        document.getElementById('totalUser').textContent = res.data.count;
+    } catch (err) {
+        console.error('Failed to load product count', err);
+    }
+}
+
+loadUserCount();
+ 

@@ -21,6 +21,7 @@
     <div id="sidebar">
         <a href="dashboard.php">Dashboard</a>
         <a href="products.php">Products</a>
+          <a href="users.php">Users</a>
      
 
     </div>
@@ -32,7 +33,7 @@
         <header class="d-flex justify-content-between align-items-center">
             <h1 class="h3">Product Management</h1>
             <div> 
-                <button class="btn btn-danger">Logout</button>
+                <button class="btn btn-danger" id="logoutBtn">Logout</button>
             </div>
         </header>
 

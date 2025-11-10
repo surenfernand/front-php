@@ -1,7 +1,13 @@
 const API_BASE = "http://127.0.0.1:8000/api";
 
-const tableBody = document.getElementById('productTableView').querySelector('tbody');
-let products = []; 
+const tableElement = document.getElementById('productTableView');
+let tableBody = null;
+
+if (tableElement) {
+    tableBody = tableElement.querySelector('tbody');
+}
+
+let products = [];
 
 async function loadProducts() {
     try {
@@ -41,37 +47,41 @@ async function loadProducts() {
     }
 }
 
-document.getElementById("addProductForm").addEventListener("submit", async function (e) {
-    e.preventDefault();
 
-    const name = document.getElementById("productName").value;
-    const description = document.getElementById("productDescription").value;
-    const price = parseFloat(document.getElementById("productPrice").value);
-    const stock_qty = parseInt(document.getElementById("productStock").value);
+const addProductForm = document.getElementById("addProductForm");
 
-    try {
-        Swal.fire({ title: 'Saving...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+if (addProductForm) {
+    document.getElementById("addProductForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
 
-        const res = await axios.post(`${API_BASE}/save-product`, { name, description, price, stock_qty });
+        const name = document.getElementById("productName").value;
+        const description = document.getElementById("productDescription").value;
+        const price = parseFloat(document.getElementById("productPrice").value);
+        const stock_qty = parseInt(document.getElementById("productStock").value);
 
-        Swal.fire('Success', 'Product added successfully!', 'success');
+        try {
+            Swal.fire({ title: 'Saving...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
 
-        const modalEl = document.getElementById("addProductModal");
-        const modal = bootstrap.Modal.getInstance(modalEl);
-        modal.hide();
+            const res = await axios.post(`${API_BASE}/save-product`, { name, description, price, stock_qty });
 
-        document.getElementById('productName').value = '';
-        document.getElementById('productDescription').value = '';
-        document.getElementById('productPrice').value = '';
-        document.getElementById('productStock').value = '';
+            Swal.fire('Success', 'Product added successfully!', 'success');
 
-        loadProducts();
-    } catch (err) {
-        console.error(err);
-        Swal.fire('Error', err.response?.data?.message || err.message, 'error');
-    }
-});
+            const modalEl = document.getElementById("addProductModal");
+            const modal = bootstrap.Modal.getInstance(modalEl);
+            modal.hide();
 
+            document.getElementById('productName').value = '';
+            document.getElementById('productDescription').value = '';
+            document.getElementById('productPrice').value = '';
+            document.getElementById('productStock').value = '';
+
+            loadProducts();
+        } catch (err) {
+            console.error(err);
+            Swal.fire('Error', err.response?.data?.message || err.message, 'error');
+        }
+    });
+}
 function openEditProductModal(index) {
     const product = products[index];
     document.getElementById('editProductId').value = product.id;
@@ -84,37 +94,41 @@ function openEditProductModal(index) {
     editModal.show();
 }
 
-document.getElementById('editProductForm').addEventListener('submit', async function (e) {
-    e.preventDefault();
 
-    const id = document.getElementById('editProductId').value;
-    const name = document.getElementById('editProductName').value;
-    const description = document.getElementById('editProductDescription').value;
-    const price = parseFloat(document.getElementById('editProductPrice').value);
-    const stock = parseInt(document.getElementById('editProductStock').value);
+const editProductForm = document.getElementById("editProductForm");
 
-    try {
-        Swal.fire({ title: 'Updating...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+if (editProductForm) {
+    document.getElementById('editProductForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
 
-        await fetch(`${API_BASE}/update-product/${id}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, description, price, stock_qty: stock })
-        });
+        const id = document.getElementById('editProductId').value;
+        const name = document.getElementById('editProductName').value;
+        const description = document.getElementById('editProductDescription').value;
+        const price = parseFloat(document.getElementById('editProductPrice').value);
+        const stock = parseInt(document.getElementById('editProductStock').value);
 
-        Swal.fire('Success', 'Product updated successfully!', 'success');
+        try {
+            Swal.fire({ title: 'Updating...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
 
-        const editModalEl = document.getElementById('editProductModal');
-        const editModal = bootstrap.Modal.getInstance(editModalEl);
-        editModal.hide();
+            await fetch(`${API_BASE}/update-product/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, description, price, stock_qty: stock })
+            });
 
-        loadProducts();
-    } catch (err) {
-        console.error('Update failed', err);
-        Swal.fire('Error', 'Failed to update product', 'error');
-    }
-});
+            Swal.fire('Success', 'Product updated successfully!', 'success');
 
+            const editModalEl = document.getElementById('editProductModal');
+            const editModal = bootstrap.Modal.getInstance(editModalEl);
+            editModal.hide();
+
+            loadProducts();
+        } catch (err) {
+            console.error('Update failed', err);
+            Swal.fire('Error', 'Failed to update product', 'error');
+        }
+    });
+}
 // Delete product with confirmation
 function confirmDelete(index) {
     const product = products[index];
@@ -139,5 +153,34 @@ function confirmDelete(index) {
     });
 }
 
-// Initial load
-loadProducts();
+
+
+
+document.getElementById('logoutBtn').addEventListener('click', async () => {
+    const token = localStorage.getItem('token'); // get token first
+    console.log('Logging out...', token);
+
+    if (!token) {
+        Swal.fire('Error', 'No token found, you are not logged in.', 'error');
+        return;
+    }
+
+    try {
+        await axios.post(`${API_BASE}/logout`, {}, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        localStorage.removeItem('token');
+
+        Swal.fire('Logged out', 'You have been logged out successfully.', 'success')
+            .then(() => {
+                window.location.href = 'sign-in.php';
+            });
+
+    } catch (err) {
+        console.error(err.response?.data || err);
+        Swal.fire('Error', err.response?.data?.message || 'Logout failed', 'error');
+    }
+});

@@ -9,6 +9,9 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
 </head>
 
 <body>
@@ -17,7 +20,7 @@
         <a href="dashboard.php">Dashboard</a>
         <a href="products.php">Products</a>
         <a href="#">Users</a>
-    
+
     </div>
     <!-- Main Content -->
     <div class="content">
@@ -25,7 +28,7 @@
             <h1 class="h3">Admin Dashboard</h1>
             <div>
                 <button class="btn btn-outline-secondary me-2">Profile</button>
-                <button class="btn btn-danger">Logout</button>
+                <button class="btn btn-danger" id="logoutBtn">Logout</button>
             </div>
         </header>
 
@@ -99,8 +102,9 @@
     </div>
 
     <?php include 'includes/footer.php'; ?>
-
+    <script src="main.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 
 </html>

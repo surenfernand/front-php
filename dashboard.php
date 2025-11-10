@@ -7,6 +7,7 @@
     <title>Admin Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -16,8 +17,7 @@
         <a href="dashboard.php">Dashboard</a>
         <a href="products.php">Products</a>
         <a href="#">Users</a>
-        <a href="#">Orders</a>
-        <a href="#">Settings</a>
+    
     </div>
     <!-- Main Content -->
     <div class="content">
@@ -98,7 +98,7 @@
 
     </div>
 
-   <?php include 'includes/footer.php'; ?>
+    <?php include 'includes/footer.php'; ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
